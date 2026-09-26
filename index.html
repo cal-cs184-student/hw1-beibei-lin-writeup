@@ -117,8 +117,20 @@
 		</div>
 		
 		<h2>Task 3: Transforms</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<p>
+		<b>Implementation:</b> I implemented the three 2D transformation functions in <code>src/transforms.cpp</code> using \(3 \times 3\) homogeneous coordinate matrices. The <code>translate(dx, dy)</code> function builds a translation matrix with \(dx\) and \(dy\) in the rightmost column, <code>scale(sx, sy)</code> scales the diagonal terms, and <code>rotate(deg)</code> converts input degrees to radians (\(rad = deg \times \frac{\pi}{180}\)) to form the 2D rotation matrix (\(\cos\theta\) and \(\sin\theta\)).
+		</p>
 
+		<p>
+		<b>Custom Robot Pose:</b> In <code>my_robot.svg</code>, I designed an upside-down handstanding cubeman performing a yoga headstand/handstand pose. To achieve this, I applied a <code>rotate(180)</code> transformation to the primary root group, turning the entire cubeman upside down. I rotated both arm groups by \(90^\circ\) and \(-90^\circ\) respectively so they plant firmly on the ground to support the torso, while extending both legs straight up into the air. I also updated the entire color palette to a vibrant emerald green (<code>#00CC66</code>).
+		</p>
+
+		<div style="display: flex; justify-content: center; gap: 20px;">
+		<figure>
+			<img src="assets/my_robot.png" width="400px" alt="My Custom Upside Down Robot"/>
+			<figcaption>Custom Upside-Down Handstanding Cubeman (<code>my_robot.svg</code>)</figcaption>
+		</figure>
+		</div>
 		<h2>Task 4: Barycentric coordinates</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
