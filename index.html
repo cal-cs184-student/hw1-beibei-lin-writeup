@@ -28,20 +28,15 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Fall 2026 Homework 1 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Beibei Lin</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/fa26">cs184.eecs.berkeley.edu/fa26</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw1-beibei-lin-writeup/">https://cal-cs184-student.github.io/hw1-beibei-lin-writeup/</a>
 		
 		<br>
 
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/fa26">cs184.eecs.berkeley.edu/fa26</a>
-
-		<figure>
-			<img src="assets/lion.jpg" alt="Lion" style="width:50%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/hw1-beibei-lin">https://github.com/cal-cs184-student/hw1-beibei-lin</a>
 
 		<!--
 		We've already added one heading per task, to make your write-up as navigable when grading. Please fit your write-up within these sections!
@@ -51,33 +46,40 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+
+		<p>
+		To draw a triangle, I first find its bounding box by taking the smallest and largest \(x\) and \(y\) coordinates of its three corners \((x_0, y_0)\), \((x_1, y_1)\), and \((x_2, y_2)\):
+		</p>
+		<p>
+		$$\text{min\_x} = \lfloor\min(x_0, x_1, x_2)\rfloor, \quad \text{max\_x} = \lceil\max(x_0, x_1, x_2)\rceil$$
+		$$\text{min\_y} = \lfloor\min(y_0, y_1, y_2)\rfloor, \quad \text{max\_y} = \lceil\max(y_0, y_1, y_2)\rceil$$
+		</p>
+		<p>
+		Next, I loop through every pixel center \((x + 0.5, y + 0.5)\) inside this box. For each pixel center, I use the three edge line functions to test if the point sits on the inside of all three edges:
+		</p>
+		<p>
+		$$L_i(x, y) = -(x - x_i)(y_{i+1} - y_i) + (y - y_i)(x_{i+1} - x_i)$$
+		</p>
+		<p>
+		If all three edge test results have the same sign (either all \(\ge 0\) or all \(\le 0\)), the pixel center is inside the triangle. Checking both positive and negative signs allows the code to work no matter if the triangle points are given in clockwise or counter-clockwise order. If the pixel center is inside, I call <code>rasterize_point(x, y, color)</code> to fill in the color.
+		</p>
+
+		<p>
+		<b>Efficiency Analysis:</b> This algorithm is no worse than checking every sample in the bounding box because it only loops through pixels between \(\text{min\_x}\) to \(\text{max\_x}\) and \(\text{min\_y}\) to \(\text{max\_y}\). It never tests pixels outside of this bounding box area, so it checks the exact minimum rectangle needed. This keeps the runtime bounded tightly to the size of the triangle rather than the whole screen.
+		</p>
+
 		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="assets/lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="assets/lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="assets/lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="assets/lion.jpg" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			</table>
+		<figure>
+			<img src="assets/task1_test4.png" width="600px" alt="Task 1 - test4.svg with Pixel Inspector"/>
+			<figcaption>
+			<code>svg/basic/test4.svg</code> rendered with default viewing parameters. The pixel inspector (toggle with <b>Z</b>) highlights jaggies along the narrow edge of the red triangle.
+			</figcaption>
+		</figure>
 		</div>
+		
+		
+
 		
 		<h2>Task 2: Antialiasing by Supersampling</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
