@@ -131,9 +131,23 @@
 			<figcaption>Custom Upside-Down Handstanding Cubeman (<code>my_robot.svg</code>)</figcaption>
 		</figure>
 		</div>
-		<h2>Task 4: Barycentric coordinates</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+		<h2>Task 4: Barycentric Coordinates</h2>
+
+		<p>
+		<b>Explanation of Barycentric Coordinates:</b> Barycentric coordinates express any point inside a triangle as a weighted linear combination of the triangle's three vertices: \(p = \alpha p_0 + \beta p_1 + \gamma p_2\), where \(\alpha + \beta + \gamma = 1\) and \(\alpha, \beta, \gamma \ge 0\). The weights \(\alpha, \beta, \gamma\) represent the relative proximity of the point to vertices \(p_0\), \(p_1\), and \(p_2\) respectively. This coordinate system enables smooth spatial interpolation of vertex attributes—such as RGB colors, texture coordinates, and surface normals—across the interior of a triangle.
+		</p>
+
+		<p>
+		For example, if vertex \(p_0\) is pure Red, \(p_1\) is pure Green, and \(p_2\) is pure Blue, a point near vertex \(p_0\) will have a high \(\alpha\) weight and render predominantly red. At the triangle's center (\(\alpha = \beta = \gamma = \frac{1}{3}\)), all three colors blend equally into gray.
+		</p>
+
+		<div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+		<figure>
+			<img src="assets/task4_test7.png" width="500px" alt="SVG Test 7 Color Wheel"/>
+			<figcaption>Color wheel rendered using barycentric color interpolation (<code>svg/basic/test7.svg</code> at sample rate 1).</figcaption>
+		</figure>
+		</div>
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
