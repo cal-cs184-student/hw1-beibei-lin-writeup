@@ -184,9 +184,75 @@
 		<p>
 		<b>Comparison & Discussion:</b> The visual disparity between nearest and bilinear sampling is largest when the texture resolution is low relative to screen display pixels (magnification) or when viewing detailed features at sharp angles. Under 1x sampling, nearest sampling displays harsh blocky borders and broken features. Bilinear sampling smooths these features out by averaging surrounding texels, rendering clean linear structures and continuous gradients even at low sample rates.
 		</p>
-		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h2>Task 6: "Level sampling" with mipmaps for texture mapping</h2>
 
+		<p>
+		<b>Concept & Implementation:</b> Level sampling prevents texture aliasing (moiré patterns and high-frequency noise) caused by minification—when many texture pixels (texels) map onto a single screen pixel. We compute pre-filtered lower-resolution texture representations called <i>mipmaps</i>. 
+		</p>
+
+		<p>
+		To pick the correct mipmap level for a sample point \((x, y)\), we compute texture coordinate differentials with respect to adjacent screen pixels \((x+1, y)\) and \((x, y+1)\). By calculating difference vectors \(\left(\frac{du}{dx}, \frac{dv}{dx}\right)\) and \(\left(\frac{du}{dy}, \frac{dv}{dy}\right)\) and scaling them by the full-resolution texture width and height, we compute the maximum footprint length \(L = \max(L_x, L_y)\) and determine the continuous mipmap level \(D = \log_2(L)\).
+		</p>
+
+		<ul>
+		<li><b>L_ZERO:</b> Samples directly from full-resolution Level 0.</li>
+		<li><b>L_NEAREST:</b> Rounds \(D\) to the nearest integer level \(\text{round}(D)\) and samples from that single MipLevel.</li>
+		<li><b>L_LINEAR (Trilinear Filter):</b> Computes sample colors at \(\lfloor D \rfloor\) and \(\lceil D \rceil\), then performs a linear interpolation across mipmap levels using weight \(t = D - \lfloor D \rfloor\).</li>
+		</ul>
+
+		<p>
+		<b>Tradeoffs Analysis:</b>
+		</p>
+
+		<table border="1" style="border-collapse: collapse; width: 100%; text-align: center; margin-bottom: 20px;">
+		<thead>
+			<tr>
+			<th>Technique</th>
+			<th>Speed (FPS)</th>
+			<th>Memory Usage</th>
+			<th>Antialiasing Power</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			<td><b>Pixel Sampling (Bilinear)</b></td>
+			<td>Fast. Reads 4 adjacent texels per sample.</td>
+			<td>Minimal. Only requires base texture memory.</td>
+			<td>Effective for magnification; weak against high-frequency minification aliasing.</td>
+			</tr>
+			<tr>
+			<td><b>Level Sampling (Mipmapping)</b></td>
+			<td>Very Fast. Trilinear requires 8 texel reads, but mipmap levels fit better in memory cache.</td>
+			<td>Increases memory footprint by \(\approx 33\%\) (\(1 + \frac{1}{4} + \frac{1}{16} + \dots = \frac{4}{3}\)).</td>
+			<td>High power against minification aliasing and moiré patterns over distant geometric surfaces.</td>
+			</tr>
+			<tr>
+			<td><b>Supersampling</b></td>
+			<td>Slowest. Multiplies rasterization, memory write, and texture lookup pass count by \(N\) (e.g., 16x).</td>
+			<td>High. Increases sample buffer size linearly with sample count (\(N \times\)).</td>
+			<td>Highest all-around power. Antialiases both texture interiors and geometric silhouette boundaries.</td>
+			</tr>
+		</tbody>
+		</table>
+
+		<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: center;">
+		<figure>
+			<img src="assets/task6_lzero_pnearest.png" width="100%" alt="L_ZERO P_NEAREST"/>
+			<figcaption><b>L_ZERO + P_NEAREST:</b> Base texture sampling without mipmapping or bilinear interpolation.</figcaption>
+		</figure>
+		<figure>
+			<img src="assets/task6_lzero_plinear.png" width="100%" alt="L_ZERO P_LINEAR"/>
+			<figcaption><b>L_ZERO + P_LINEAR:</b> Smooth pixel blending at base mipmap level.</figcaption>
+		</figure>
+		<figure>
+			<img src="assets/task6_lnearest_pnearest.png" width="100%" alt="L_NEAREST P_NEAREST"/>
+			<figcaption><b>L_NEAREST + P_NEAREST:</b> Nearest mipmap level sampling with nearest pixel selection.</figcaption>
+		</figure>
+		<figure>
+			<img src="assets/task6_lnearest_plinear.png" width="100%" alt="L_NEAREST P_LINEAR"/>
+			<figcaption><b>L_NEAREST + P_LINEAR:</b> Nearest mipmap level with bilinear pixel interpolation.</figcaption>
+		</figure>
+		</div>
 		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
